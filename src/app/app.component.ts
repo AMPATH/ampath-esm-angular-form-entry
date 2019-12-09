@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'openmrs-esm-angular-form-entry';
+  title = 'ampath-esm-angular-form-entry';
 }

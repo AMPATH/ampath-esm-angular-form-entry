@@ -10,7 +10,7 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('openmrs-esm-angular-form-entry app is running!');
+    expect(page.getTitleText()).toEqual('ampath-esm-angular-form-entry app is running!');
   });
 
   afterEach(async () => {

@@ -1,6 +1,6 @@
 {
-  "name": "openmrs-esm-angular-form-entry",
-  "version": "0.0.0",
+  "name": "ampath-esm-angular-form-entry",
+  "version": "1.0.0-SNAPSHOT",
   "scripts": {
     "ng": "ng",
     "start": "ng run serve:single-spa",
@@ -8,12 +8,12 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:single-spa": "ng build --prod --deploy-url http://localhost:4200/",
-    "serve:single-spa": "ng serve --ssl true  --disable-host-check --port 4200 --deploy-url https://localhost:4200/ --live-reload false"
+    "build:single-spa": "ng build --prod --output-hashing=none --deploy-url http://localhost:4202/",
+    "serve:single-spa": "ng serve --prod=true --ssl true  --disable-host-check --port 4202 --live-reload false"
   },
   "private": true,
   "dependencies": {
-    "@ampath-kenya/ngx-openmrs-formentry": "^3.0.0-alpha1",
+    "@ampath-kenya/ngx-openmrs-formentry": "^3.0.0-alpha2",
     "@angular-builders/custom-webpack": "^8",
     "@angular/animations": "~8.2.14",
     "@angular/common": "~8.2.14",

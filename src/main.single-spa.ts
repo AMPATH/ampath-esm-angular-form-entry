@@ -3,7 +3,7 @@ import { enableProdMode, NgZone } from '@angular/core';
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { Router } from '@angular/router';
-import { ɵAnimationEngine as AnimationEngine } from '@angular/animations/browser'; 
+import { ɵAnimationEngine as AnimationEngine } from '@angular/animations/browser';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import singleSpaAngular from 'single-spa-angular';
@@ -21,7 +21,9 @@ const lifecycles = singleSpaAngular({
   },
   template: '<my-app-root />',
   Router,
+  // tslint:disable-next-line:object-literal-shorthand
   NgZone: NgZone,
+  // tslint:disable-next-line:object-literal-shorthand
   AnimationEngine: AnimationEngine,
 });
 
