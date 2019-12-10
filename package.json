@@ -8,8 +8,10 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:single-spa": "ng build --prod --output-hashing=none --deploy-url http://localhost:4202/",
-    "serve:single-spa": "ng serve --prod=true --ssl true  --disable-host-check --port 4202 --live-reload false"
+    "build:single-spa": "ng build --prod --output-hashing=none --deploy-url https://localhost:4202/",
+    "serve:single-spa": "ng serve --prod=true --ssl true  --disable-host-check --port 4202 --live-reload false",
+    "serve:dist": "npx angular-http-server -p 4202 --https --cors --path dist/ampath-esm-angular-form-entry/",
+    "build-serve:dist": "npm run build:single-spa && npm run serve:dist"
   },
   "private": true,
   "dependencies": {
@@ -40,6 +42,7 @@
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^8.9.5",
+    "angular-http-server": "^1.9.0",
     "codelyzer": "^5.0.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
