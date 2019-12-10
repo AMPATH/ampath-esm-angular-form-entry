@@ -14,6 +14,16 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
+## Build Single SPA
+1. Build single spa
+`npm run build:single-spa`
+
+2. Serve dist of single spa
+`npm run serve:dist`
+
+Optionally, build and server single spa
+`npm run build-serve:dist`
+
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
