@@ -21,6 +21,6 @@ deploy:
     branch: CD
 after_deploy:
     - echo "Updating import map to point to new version of @ampath/esm-angular-form-entry"
-    - statuscode=$(curl --output /dev/null --write-out %{http_code} -u $DEPLOYER_USERNAME:$DEPLOYER_PASSWORD -d '{ "service":"@ampath/esm-angular-form-entry","url":"https://spa-modules.nyc3.digitaloceanspaces.com/@ampath/esm-angular-form-entry/'$TRAVIS_COMMIT'/ampath-esm-form-entry.js" }' -X PATCH $DEPLOYER_HOST/services\?env=prod -H "Accept:application/json" -H "Content-Type:application/json")
+    - statuscode=$(curl --output /dev/null --write-out %{http_code} -u $DEPLOYER_USERNAME:$DEPLOYER_PASSWORD -d '{ "service":"@ampath/esm-angular-form-entry","url":"https://ampath-poc.fra1.digitaloceanspaces.com/@ampath/esm-angular-form-entry/'$TRAVIS_COMMIT'/ampath-esm-form-entry.js" }' -X PATCH $DEPLOYER_HOST/services\?env=prod -H "Accept:application/json" -H "Content-Type:application/json")
     - echo "Deployment Status Code --> ${statuscode}"
     - if [ "$statuscode" -ne 200 ]; then travis_terminate "$statuscode"; fi
