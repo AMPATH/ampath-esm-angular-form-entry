@@ -8,10 +8,11 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:single-spa": "ng build --prod --output-hashing=none --deploy-url https://localhost:4202/",
+    "build:single-spa": "ng build --prod --output-hashing=none --deploy-url https://localhost:4202/ && npm run rename:mainjs",
     "serve:single-spa": "ng serve --prod=true --ssl true  --disable-host-check --port 4202 --live-reload false",
     "serve:dist": "npx angular-http-server -p 4202 --https --cors --path dist/ampath-esm-angular-form-entry/",
-    "build-serve:dist": "npm run build:single-spa && npm run serve:dist"
+    "build-serve:dist": "npm run build:single-spa && npm run serve:dist",
+    "rename:mainjs": "node -e \"require('fs').rename('dist/ampath-esm-angular-form-entry/main-es2015.js', 'dist/ampath-esm-angular-form-entry/ampath-esm-form-entry.js', function(err) { if (err) console.log(err); console.log('File successfully renamed!') })\""
   },
   "private": true,
   "dependencies": {
