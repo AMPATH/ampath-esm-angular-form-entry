@@ -3,7 +3,7 @@ node_js:
   - node
 script:
   - npm run lint
-  - npm run build:single-spa
+  - npm run build:single-spa-travis
   - echo "Folder name in Digital Ocean Spaces - $TRAVIS_COMMIT"
   - mkdir -p dist/@ampath/esm-angular-form-entry/$TRAVIS_COMMIT
   - mv dist/ampath-esm-angular-form-entry/*.* dist/@ampath/esm-angular-form-entry/$TRAVIS_COMMIT/
