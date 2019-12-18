@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { getCurrentPatient } from '@openmrs/esm-api';
+
 
 import { FormGroup } from '@angular/forms';
 import {
   QuestionFactory, FormFactory, ObsValueAdapter, OrderValueAdapter,
   EncounterAdapter, DataSources, EncounterPdfViewerService, FormErrorsService, Form
 } from '@ampath-kenya/ngx-openmrs-formentry/dist/ngx-formentry';
+import { OpenmrsApiService } from './openmrs-api.service';
 
 declare var require: any;
 
@@ -30,6 +31,7 @@ export class FeWrapperComponent implements OnInit {
   encounterObject = adultFormObs;
 
   constructor(
+    private openmrsApi: OpenmrsApiService,
     private questionFactory: QuestionFactory,
     private formFactory: FormFactory,
     private obsValueAdapater: ObsValueAdapter,
@@ -46,12 +48,12 @@ export class FeWrapperComponent implements OnInit {
   }
 
   public createForm() {
-    getCurrentPatient().subscribe((patient) => {
-      console.log('patient', patient);
-    });
-    // console.log('function', getCurrentPatient);
     this.form = this.formFactory.createForm(this.schema, this.dataSources.dataSources);
-
+    this.openmrsApi.getCurrentPatient().subscribe((patient) => {
+      console.log('patient', patient);
+    }, (error) => {
+      console.error('An error occured while fetching patient', error);
+    });
   }
 
   public onSubmit(event: any) {

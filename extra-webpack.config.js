@@ -4,7 +4,6 @@ const ReplaceInFileWebpackPlugin = require('replace-in-file-webpack-plugin');
 
 module.exports = (angularWebpackConfig, options) => {
   const singleSpaWebpackConfig = singleSpaAngularWebpack(angularWebpackConfig, options)
-  //console.log('externals', singleSpaWebpackConfig.externals)
 
   singleSpaWebpackConfig.externals['@openmrs/esm-api'] = '@openmrs/esm-api';
   // console.log('webpack', singleSpaWebpackConfig.output);
