@@ -15,6 +15,12 @@ module.exports = function (config) {
     client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
+    // Leaving it here just in case we find the fix to the testing hack
+    // webpack: {
+    //     externals: {
+    //         '@openmrs/esm-api': '@openmrs/esm-api',
+    //     },
+    // },
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, './coverage/ampath-esm-angular-form-entry'),
       reports: ['html', 'lcovonly', 'text-summary'],

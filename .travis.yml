@@ -1,8 +1,11 @@
 language: node_js
 node_js:
   - node
+services:
+  - xvfb
 script:
   - npm run lint
+  - npm run test
   - npm run build:single-spa-travis
   - echo "Folder name in Digital Ocean Spaces - $TRAVIS_COMMIT"
   - mkdir -p dist/@ampath/esm-angular-form-entry/$TRAVIS_COMMIT
@@ -24,3 +27,7 @@ after_deploy:
     - statuscode=$(curl --output /dev/null --write-out %{http_code} -u $DEPLOYER_USERNAME:$DEPLOYER_PASSWORD -d '{ "service":"@ampath/esm-angular-form-entry","url":"https://ampath-poc.fra1.digitaloceanspaces.com/@ampath/esm-angular-form-entry/'$TRAVIS_COMMIT'/ampath-esm-form-entry.js" }' -X PATCH $DEPLOYER_HOST/services\?env=prod -H "Accept:application/json" -H "Content-Type:application/json")
     - echo "Deployment Status Code --> ${statuscode}"
     - if [ "$statuscode" -ne 200 ]; then travis_terminate "$statuscode"; fi
+addons:
+  apt:
+    packages:
+      - google-chrome-stable
