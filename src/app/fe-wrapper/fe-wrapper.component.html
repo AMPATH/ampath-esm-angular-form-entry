@@ -1,8 +1,8 @@
 <!-- <h1>Adult Return Form</h1> -->
-<h4>Adult Return Form</h4>
-<div class="container-fluid scoped-bootstrap" style="margin:5px;">
+<h4 style="margin-left: 15px; margin-top:0px; margin-bottom:0px;">{{ formName }}</h4>
+<div class="container-fluid scoped-bootstrap" style="margin:5px; margin-top:0px;">
     <!-- <error-renderer [form]="form"></error-renderer> -->
-    <form [formGroup]="form.rootNode.control">
+    <form *ngIf="schema" [formGroup]="form.rootNode.control">
         <form-renderer [node]="form.rootNode"></form-renderer>
         <!-- <div class="form-row">
             <button class="btn btn-primary" type="submit" (click)="onSubmit($event)">Save</button>

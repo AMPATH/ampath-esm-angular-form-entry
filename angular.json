@@ -8,7 +8,7 @@
       "schematics": {},
       "root": "",
       "sourceRoot": "src",
-      "prefix": "my-app",
+      "prefix": "formentry",
       "architect": {
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",

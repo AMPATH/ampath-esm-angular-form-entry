@@ -7,6 +7,9 @@ import { FormEntryModule } from '@ampath-kenya/ngx-openmrs-formentry/dist/ngx-fo
 import { ReactiveFormsModule } from '@angular/forms';
 import { OpenmrsApiService } from './openmrs-api.service';
 import { of } from 'rxjs';
+import { FormSchemaService } from './form-schema.service';
+import { OpenmrsApiModule } from '../openmrs-api/openmrs-api.module';
+import { LocalStorageService } from '../local-storage/local-storage.service';
 
 describe('FeWrapperComponent', () => {
   let component: FeWrapperComponent;
@@ -26,13 +29,16 @@ describe('FeWrapperComponent', () => {
         BrowserModule,
         BrowserAnimationsModule,
         FormEntryModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        OpenmrsApiModule
       ],
       providers: [
         {
           provide: OpenmrsApiService,
           useValue: openmrsApiStub
-        }
+        },
+        FormSchemaService,
+        LocalStorageService
       ]
       // schemas: [NO_ERRORS_SCHEMA]
     })

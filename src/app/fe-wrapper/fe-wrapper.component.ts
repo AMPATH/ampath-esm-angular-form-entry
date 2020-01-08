@@ -7,6 +7,7 @@ import {
   EncounterAdapter, DataSources, EncounterPdfViewerService, FormErrorsService, Form
 } from '@ampath-kenya/ngx-openmrs-formentry/dist/ngx-formentry';
 import { OpenmrsApiService } from './openmrs-api.service';
+import { FormSchemaService } from './form-schema.service';
 
 declare var require: any;
 
@@ -27,11 +28,14 @@ export class FeWrapperComponent implements OnInit {
   formGroup: FormGroup;
   activeTab = 0;
   form: Form;
+  formName: string;
+  formUuid: string;
   stack = [];
   encounterObject = adultFormObs;
 
   constructor(
     private openmrsApi: OpenmrsApiService,
+    private formSchemaService: FormSchemaService,
     private questionFactory: QuestionFactory,
     private formFactory: FormFactory,
     private obsValueAdapater: ObsValueAdapter,
@@ -39,16 +43,34 @@ export class FeWrapperComponent implements OnInit {
     private encAdapter: EncounterAdapter,
     private dataSources: DataSources, private encounterPdfViewerService: EncounterPdfViewerService,
     private formErrorsService: FormErrorsService) {
-    this.schema = adultForm;
-    // console.log('Data >>>', adultForm, adultFormObs, formOrdersPayload);
+
   }
 
   ngOnInit() {
-    this.createForm();
+    // this.createForm();
+    const formUuid = this.getFormUuidFromUrl();
+    this.lauchForm(formUuid);
+  }
+
+  public getFormUuidFromUrl() {
+    const match = /\/formentry\/([a-zA-Z0-9\-]+)\/?/.exec(location.pathname);
+    return match && match[1];
+  }
+
+  public lauchForm(uuid: string) {
+    this.formSchemaService.getFormSchemaByUuid(uuid, true)
+      .subscribe(formSchema => {
+        this.schema = formSchema;
+        this.createForm();
+      }, error => {
+        console.error(error);
+      });
   }
 
   public createForm() {
+    this.formName = this.schema.name;
     this.form = this.formFactory.createForm(this.schema, this.dataSources.dataSources);
+    // TODO: subscribe to patient load events and inject patient to the form as a data dependency
     this.openmrsApi.getCurrentPatient().subscribe((patient) => {
       console.log('patient', patient);
     }, (error) => {

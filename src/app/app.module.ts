@@ -8,6 +8,9 @@ import { EmptyRouteComponent } from './empty-route/empty-route.component';
 import { FeWrapperComponent } from './fe-wrapper/fe-wrapper.component';
 import { FormEntryModule } from '@ampath-kenya/ngx-openmrs-formentry/dist/ngx-formentry';
 import { ReactiveFormsModule } from '@angular/forms';
+import { OpenmrsApiModule } from './openmrs-api/openmrs-api.module';
+import { FormSchemaService } from './fe-wrapper/form-schema.service';
+import { LocalStorageService } from './local-storage/local-storage.service';
 
 @NgModule({
   declarations: [
@@ -20,9 +23,13 @@ import { ReactiveFormsModule } from '@angular/forms';
     AppRoutingModule,
     FormEntryModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    OpenmrsApiModule
   ],
-  providers: [],
+  providers: [
+    FormSchemaService,
+    LocalStorageService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
