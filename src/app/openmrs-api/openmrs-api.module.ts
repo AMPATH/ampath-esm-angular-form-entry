@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { FormResourceService } from './form-resource.service';
 import { OpenmrsEsmApiService } from './openmrs-esm-api.service';
+import { PersonResourceService } from './person-resource.service';
 
 @NgModule({
   declarations: [],
@@ -13,7 +14,8 @@ import { OpenmrsEsmApiService } from './openmrs-esm-api.service';
   ],
   providers: [
     FormResourceService,
-    OpenmrsEsmApiService
+    OpenmrsEsmApiService,
+    PersonResourceService
   ]
 })
 export class OpenmrsApiModule { }
