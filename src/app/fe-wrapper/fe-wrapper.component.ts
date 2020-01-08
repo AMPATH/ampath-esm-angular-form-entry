@@ -6,14 +6,8 @@ import {
   QuestionFactory, FormFactory, ObsValueAdapter, OrderValueAdapter,
   EncounterAdapter, DataSources, EncounterPdfViewerService, FormErrorsService, Form
 } from '@ampath-kenya/ngx-openmrs-formentry/dist/ngx-formentry';
-import { OpenmrsApiService } from './openmrs-api.service';
-import { FormSchemaService } from './form-schema.service';
-
-declare var require: any;
-
-const adultForm = require('./adult-1.4.json');
-const adultFormObs = require('./obs.json');
-const formOrdersPayload = require('./orders.json');
+import { OpenmrsEsmApiService } from '../openmrs-api/openmrs-esm-api.service';
+import { FormSchemaService } from '../form-schema/form-schema.service';
 
 @Component({
   selector: 'my-app-fe-wrapper',
@@ -21,7 +15,6 @@ const formOrdersPayload = require('./orders.json');
   styleUrls: ['./fe-wrapper.component.css']
 })
 export class FeWrapperComponent implements OnInit {
-
   data: any;
   schema: any;
   sections: {} = {};
@@ -30,11 +23,9 @@ export class FeWrapperComponent implements OnInit {
   form: Form;
   formName: string;
   formUuid: string;
-  stack = [];
-  encounterObject = adultFormObs;
 
   constructor(
-    private openmrsApi: OpenmrsApiService,
+    private openmrsApi: OpenmrsEsmApiService,
     private formSchemaService: FormSchemaService,
     private questionFactory: QuestionFactory,
     private formFactory: FormFactory,
@@ -47,9 +38,8 @@ export class FeWrapperComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.createForm();
     const formUuid = this.getFormUuidFromUrl();
-    this.lauchForm(formUuid);
+    this.launchForm(formUuid);
   }
 
   public getFormUuidFromUrl() {
@@ -57,7 +47,7 @@ export class FeWrapperComponent implements OnInit {
     return match && match[1];
   }
 
-  public lauchForm(uuid: string) {
+  public launchForm(uuid: string) {
     this.formSchemaService.getFormSchemaByUuid(uuid, true)
       .subscribe(formSchema => {
         this.schema = formSchema;
@@ -79,6 +69,16 @@ export class FeWrapperComponent implements OnInit {
   }
 
   public onSubmit(event: any) {
+    // TODO: Implement form saving
+    console.log('Saving form..');
+  }
+
+  public onCancel() {
+    // TODO: confirm cancelation
+    this.navigateToPatientChart();
+  }
+
+  public navigateToPatientChart() {
 
   }
 }
