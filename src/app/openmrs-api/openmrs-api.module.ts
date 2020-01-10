@@ -6,6 +6,7 @@ import { FormResourceService } from './form-resource.service';
 import { OpenmrsEsmApiService } from './openmrs-esm-api.service';
 import { PersonResourceService } from './person-resource.service';
 import { ProviderResourceService } from './provider-resource.service';
+import { LocationResourceService } from './location-resource.service';
 
 @NgModule({
   declarations: [],
@@ -17,7 +18,8 @@ import { ProviderResourceService } from './provider-resource.service';
     FormResourceService,
     OpenmrsEsmApiService,
     PersonResourceService,
-    ProviderResourceService
+    ProviderResourceService,
+    LocationResourceService
   ]
 })
 export class OpenmrsApiModule { }

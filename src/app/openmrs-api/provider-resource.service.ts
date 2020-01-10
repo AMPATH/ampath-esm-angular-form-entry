@@ -11,7 +11,8 @@ import { WindowRef } from '../window-ref';
 export class ProviderResourceService {
   public v = 'full';
 
-  constructor(protected http: HttpClient,
+  constructor(
+    protected http: HttpClient,
     private windowRef: WindowRef,
     protected personService: PersonResourceService) {
   }
@@ -32,7 +33,7 @@ export class ProviderResourceService {
 
 
     return this.http.get<any>(url, {
-      params: params
+      params
     }).pipe(
       map((response) => {
         return response.results;
@@ -52,7 +53,7 @@ export class ProviderResourceService {
     const params: HttpParams = new HttpParams()
       .set('v', (v && v.length > 0) ? v : this.v);
     return this.http.get(url, {
-      params: params
+      params
     });
   }
   public getProviderByPersonUuid(uuid: string, v?: string): ReplaySubject<any> {
@@ -68,7 +69,7 @@ export class ProviderResourceService {
             response.pipe(take(1)).subscribe(
               (providers) => {
 
-                let foundProvider = providers.find((provider)=>{
+                const foundProvider = providers.find((provider) => {
                   return provider.person && provider.person.uuid === uuid;
                 });
 
