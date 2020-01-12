@@ -10,6 +10,7 @@ import { of } from 'rxjs';
 import { FormSchemaService } from '../form-schema/form-schema.service';
 import { OpenmrsApiModule } from '../openmrs-api/openmrs-api.module';
 import { LocalStorageService } from '../local-storage/local-storage.service';
+import { FormDataSourceService } from '../form-data-source/form-data-source.service';
 
 describe('FeWrapperComponent', () => {
   let component: FeWrapperComponent;
@@ -38,7 +39,8 @@ describe('FeWrapperComponent', () => {
           useValue: openmrsApiStub
         },
         FormSchemaService,
-        LocalStorageService
+        LocalStorageService,
+        FormDataSourceService
       ]
       // schemas: [NO_ERRORS_SCHEMA]
     })
