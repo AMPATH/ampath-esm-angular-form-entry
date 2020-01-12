@@ -1,11 +1,12 @@
 const singleSpaAngularWebpack = require('single-spa-angular/lib/webpack').default
-
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const ReplaceInFileWebpackPlugin = require('replace-in-file-webpack-plugin');
 
 module.exports = (angularWebpackConfig, options) => {
   const singleSpaWebpackConfig = singleSpaAngularWebpack(angularWebpackConfig, options)
 
   singleSpaWebpackConfig.externals['@openmrs/esm-api'] = '@openmrs/esm-api';
+  singleSpaWebpackConfig.plugins.push(new BundleAnalyzerPlugin());
   // console.log('webpack', singleSpaWebpackConfig);
 
   if (singleSpaWebpackConfig.mode === 'production') {
