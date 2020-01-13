@@ -1,7 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+
 import { FormResourceService } from './form-resource.service';
+import { OpenmrsEsmApiService } from './openmrs-esm-api.service';
+import { PersonResourceService } from './person-resource.service';
+import { ProviderResourceService } from './provider-resource.service';
+import { LocationResourceService } from './location-resource.service';
+import { ConceptResourceService } from './concept-resource.service';
 
 @NgModule({
   declarations: [],
@@ -10,7 +16,12 @@ import { FormResourceService } from './form-resource.service';
     HttpClientModule
   ],
   providers: [
-    FormResourceService
+    FormResourceService,
+    OpenmrsEsmApiService,
+    PersonResourceService,
+    ProviderResourceService,
+    LocationResourceService,
+    ConceptResourceService
   ]
 })
 export class OpenmrsApiModule { }

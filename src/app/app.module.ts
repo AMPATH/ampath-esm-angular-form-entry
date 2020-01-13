@@ -9,8 +9,9 @@ import { FeWrapperComponent } from './fe-wrapper/fe-wrapper.component';
 import { FormEntryModule } from '@ampath-kenya/ngx-openmrs-formentry/dist/ngx-formentry';
 import { ReactiveFormsModule } from '@angular/forms';
 import { OpenmrsApiModule } from './openmrs-api/openmrs-api.module';
-import { FormSchemaService } from './fe-wrapper/form-schema.service';
+import { FormSchemaService } from './form-schema/form-schema.service';
 import { LocalStorageService } from './local-storage/local-storage.service';
+import { FormDataSourceService } from './form-data-source/form-data-source.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { LocalStorageService } from './local-storage/local-storage.service';
   ],
   providers: [
     FormSchemaService,
-    LocalStorageService
+    LocalStorageService,
+    FormDataSourceService
   ],
   bootstrap: [AppComponent]
 })
