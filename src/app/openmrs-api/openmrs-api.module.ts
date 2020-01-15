@@ -8,6 +8,7 @@ import { PersonResourceService } from './person-resource.service';
 import { ProviderResourceService } from './provider-resource.service';
 import { LocationResourceService } from './location-resource.service';
 import { ConceptResourceService } from './concept-resource.service';
+import { EncounterResourceService } from './encounter-resource.service';
 
 @NgModule({
   declarations: [],
@@ -21,7 +22,8 @@ import { ConceptResourceService } from './concept-resource.service';
     PersonResourceService,
     ProviderResourceService,
     LocationResourceService,
-    ConceptResourceService
+    ConceptResourceService,
+    EncounterResourceService
   ]
 })
 export class OpenmrsApiModule { }

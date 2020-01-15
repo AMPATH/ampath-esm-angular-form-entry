@@ -28,4 +28,16 @@ export class PersonResourceService {
     });
   }
 
+  public saveUpdatePerson(uuid, payload) {
+    if (!payload || !uuid) {
+      return null;
+    }
+    const url = this.getUrl() + '/' + uuid;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(url, JSON.stringify(payload), { headers }).pipe(
+      map((response: any) => {
+        return response.person;
+      }));
+  }
+
 }

@@ -11,6 +11,7 @@ import { FormSchemaService } from '../form-schema/form-schema.service';
 import { OpenmrsApiModule } from '../openmrs-api/openmrs-api.module';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { FormDataSourceService } from '../form-data-source/form-data-source.service';
+import { FormSubmissionService } from '../form-submission/form-submission.service';
 
 describe('FeWrapperComponent', () => {
   let component: FeWrapperComponent;
@@ -40,7 +41,8 @@ describe('FeWrapperComponent', () => {
         },
         FormSchemaService,
         LocalStorageService,
-        FormDataSourceService
+        FormDataSourceService,
+        FormSubmissionService
       ]
       // schemas: [NO_ERRORS_SCHEMA]
     })

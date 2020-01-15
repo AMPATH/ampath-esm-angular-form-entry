@@ -11,6 +11,7 @@ import { FormSchemaService } from '../form-schema/form-schema.service';
 import { FormDataSourceService } from '../form-data-source/form-data-source.service';
 import { Observable, forkJoin, ReplaySubject } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { FormSubmissionService } from '../form-submission/form-submission.service';
 
 @Component({
   selector: 'my-app-fe-wrapper',
@@ -38,6 +39,7 @@ export class FeWrapperComponent implements OnInit {
     private encAdapter: EncounterAdapter,
     private dataSources: DataSources,
     private formDataSourceService: FormDataSourceService,
+    private formSubmissionService: FormSubmissionService,
     private encounterPdfViewerService: EncounterPdfViewerService,
     private formErrorsService: FormErrorsService) {
 
@@ -51,6 +53,24 @@ export class FeWrapperComponent implements OnInit {
         // TODO: Handle errors
         console.error('Error rendering form', err);
       });
+  }
+
+  public onSubmit(event: any) {
+    if (this.isFormvalid()) {
+      this.saveForm()
+        .subscribe(
+          response => {
+            // TODO: Handle Successful
+            console.log('Form submitted', response);
+          }, error => {
+            console.error('Error submitting form', error);
+          });
+    }
+  }
+
+  public onCancel() {
+    // TODO: confirm cancelation
+    this.navigateToPatientChart();
   }
 
   public getFormUuidFromUrl() {
@@ -105,7 +125,7 @@ export class FeWrapperComponent implements OnInit {
     this.formSchemaService
       .getFormSchemaByUuid(uuid, true).pipe(take(1))
       .subscribe(formSchema => {
-        console.log('Loaded form schema', formSchema);
+        // console.log('Loaded form schema', formSchema);
         subject.next(formSchema);
       }, error => {
         subject.error(new Error('Error fetching form schema. Details: ' + error));
@@ -121,6 +141,7 @@ export class FeWrapperComponent implements OnInit {
     this.wireDataSources();
     this.formName = this.formSchema.name;
     this.form = this.formFactory.createForm(this.formSchema, this.dataSources.dataSources);
+    this.setUpPayloadProcessingInformation();
   }
 
   private wireDataSources() {
@@ -136,21 +157,33 @@ export class FeWrapperComponent implements OnInit {
       this.formDataSourceService.getDataSources().location);
     this.dataSources.registerDataSource('conceptAnswers',
       this.formDataSourceService.getDataSources().conceptAnswers);
+
+    // TODO: Fix the patient datasource object to work with FHIR
     // this.dataSources.registerDataSource('patient',
     //   this.formDataSourceService.getPatientObject(this.patient), true);
   }
 
-  public onSubmit(event: any) {
-    // TODO: Implement form saving
-    console.log('Saving form..');
+  private setUpPayloadProcessingInformation() {
+    this.form.valueProcessingInfo.personUuid = this.patient.id;
+    this.form.valueProcessingInfo.patientUuid = this.patient.id;
+    this.form.valueProcessingInfo.formUuid = this.formSchema.uuid;
+    if (this.formSchema.encounterType) {
+      this.form.valueProcessingInfo.encounterTypeUuid = this.formSchema.encounterType.uuid;
+    } else {
+      throw new Error('Please associate the form with an encounter type.');
+    }
   }
 
-  public onCancel() {
-    // TODO: confirm cancelation
-    this.navigateToPatientChart();
+  private navigateToPatientChart() {
+
   }
 
-  public navigateToPatientChart() {
+  // check validity of form
+  private isFormvalid(): boolean {
+    return this.form.valid;
+  }
 
+  private saveForm(): Observable<any> {
+    return this.formSubmissionService.submitPayload(this.form);
   }
 }
