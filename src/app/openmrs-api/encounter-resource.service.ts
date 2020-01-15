@@ -14,14 +14,13 @@ export class EncounterResourceService {
     'location:ref,encounterType:ref,encounterProviders:(uuid,display,provider:(uuid,display)))';
 
   constructor(
-    protected http: HttpClient, 
+    protected http: HttpClient,
     protected windoRef: WindowRef) { }
   public getUrl(): string {
     return this.windoRef.openmrsRestBase;
   }
 
-  public getEncountersByPatientUuid(patientUuid: string, cached: boolean = false,
-    v: string = null): Observable<any> {
+  public getEncountersByPatientUuid(patientUuid: string, cached: boolean = false, v: string = null): Observable<any> {
     if (!patientUuid) {
       return null;
     }
@@ -31,13 +30,13 @@ export class EncounterResourceService {
       .set('v', this.v);
 
     return this.http.get(url, {
-      params: params
+      params
     }).pipe(flatMap((encounters: any) => {
 
       if (encounters.results.length >= 500) {
         params = params.set('startIndex', '500');
         return this.http.get<any>(url, {
-          params: params
+          params
         }).pipe(map((res) => {
 
           return encounters.results.concat(res.results);
@@ -56,16 +55,16 @@ export class EncounterResourceService {
     if (!uuid) {
       return null;
     }
-    const _customDefaultRep = 'custom:(uuid,encounterDatetime,' +
+    const customDefaultRep = 'custom:(uuid,encounterDatetime,' +
       'patient:(uuid,uuid,person,identifiers:full),form:(uuid,name),' +
       'visit:(uuid,visitType,display,startDatetime,stopDatetime),' +
       'location:ref,encounterType:ref,' +
       'encounterProviders:(uuid,display,provider:(uuid,display)),orders:full,' +
       'obs:(uuid,obsDatetime,concept:(uuid,uuid,name:(display)),value:ref,groupMembers))';
     const params = new HttpParams()
-      .set('v', _customDefaultRep);
+      .set('v', customDefaultRep);
     const url = this.getUrl() + 'encounter/' + uuid;
-    return this.http.get(url, { params: params });
+    return this.http.get(url, { params });
   }
 
   public getEncounterTypes(v: string) {

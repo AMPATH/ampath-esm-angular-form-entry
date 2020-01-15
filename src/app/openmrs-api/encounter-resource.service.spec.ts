@@ -36,22 +36,22 @@ describe('EncounterResourceService', () => {
         const encountersResponse = {
             results: [
                 {
-                    'uuid': '927d9d1f-44ce-471e-a77b-d1f1342f43f6',
-                    'encounterDatetime': '2011-02-09T00:00:00.000+0300',
-                    'patient': {
-                        'uuid': '922fc86d-ad42-4c50-98a6-b1f310863c07'
+                    uuid: '927d9d1f-44ce-471e-a77b-d1f1342f43f6',
+                    encounterDatetime: '2011-02-09T00:00:00.000+0300',
+                    patient: {
+                        uuid: '922fc86d-ad42-4c50-98a6-b1f310863c07'
                     },
-                    'form': {
-                        'uuid': '4710fa02-46ee-421d-a951-9eb012e2e950',
-                        'name': 'AMPATH Pediatric Return Visit Form 4.4 with Mother-Baby Link'
+                    form: {
+                        uuid: '4710fa02-46ee-421d-a951-9eb012e2e950',
+                        name: 'AMPATH Pediatric Return Visit Form 4.4 with Mother-Baby Link'
                     },
-                    'location': {
-                        'uuid': '08feb5b6-1352-11df-a1f1-0026b9348838',
-                        'display': 'Amukura',
-                        'links': [
+                    location: {
+                        uuid: '08feb5b6-1352-11df-a1f1-0026b9348838',
+                        display: 'Amukura',
+                        links: [
                             {
-                                'rel': 'self',
-                                'uri': 'https://amrs.ampath.or.ke:8443/amrs/ws/rest/'
+                                rel: 'self',
+                                uri: 'https://amrs.ampath.or.ke:8443/amrs/ws/rest/'
                             }
                         ]
                     }
@@ -84,47 +84,39 @@ describe('EncounterResourceService', () => {
     });
     describe('get Encounter by uuid', () => {
         const encounterResponse = {
-            'uuid': 'd9ad587c-1350-11df-a1f1-0026b9348838',
-            'encounterDatetime': '2009-07-26T00:00:00.000+0300',
-            'patient': {
-                'uuid': '5de55880-1359-11df-a1f1-0026b9348838'
+            uuid: 'd9ad587c-1350-11df-a1f1-0026b9348838',
+            encounterDatetime: '2009-07-26T00:00:00.000+0300',
+            patient: {
+                uuid: '5de55880-1359-11df-a1f1-0026b9348838'
             },
-            'form': {
-                'uuid': 'dfac3ba8-1350-11df-a1f1-0026b9348838',
-                'name': 'Dummy Registration Form'
+            form: {
+                uuid: 'dfac3ba8-1350-11df-a1f1-0026b9348838',
+                name: 'Dummy Registration Form'
             },
-            'visit': null,
-            'location': {
-                'uuid': '08fec33a-1352-11df-a1f1-0026b9348838',
-                'display': 'Location-16',
-                'links': [
+            visit: null,
+            location: {
+                uuid: '08fec33a-1352-11df-a1f1-0026b9348838',
+                display: 'Location-16',
+                links: [
                     {
-                        'rel': 'self',
-                        'uri': 'https://amrs.ampath.or.ke:8443/amrs/ws/rest/v1/location'
+                        rel: 'self',
+                        uri: 'https://amrs.ampath.or.ke:8443/amrs/ws/rest/v1/location'
                     }
                 ]
             },
-            'encounterType': {
-                'uuid': 'df555734-1350-11df-a1f1-0026b9348838',
-                'display': 'DUMMYREGISTRATION',
-                'links': [
+            encounterType: {
+                uuid: 'df555734-1350-11df-a1f1-0026b9348838',
+                display: 'DUMMYREGISTRATION',
+                links: [
                     {
-                        'rel': 'self',
-                        'uri': 'https://amrs.ampath.or.ke:8443/amrs/ws/rest/v1/encountertype'
+                        rel: 'self',
+                        uri: 'https://amrs.ampath.or.ke:8443/amrs/ws/rest/v1/encountertype'
                     }
                 ]
             }
         };
 
         it('should return null when params are not specified', () => {
-            const patientUuid = 'uuid';
-            const _customDefaultRep = 'custom:(uuid,encounterDatetime,' +
-                'patient:(uuid,uuid,identifiers),form:(uuid,name),' +
-                'visit:(uuid,visitType,display,startDatetime,stopDatetime),' +
-                'location:ref,encounterType:ref,encounterProviders:(uuid,display' +
-                ',provider:(uuid,display)),orders:full,obs:(uuid,obsDatetime,' +
-                'concept:(uuid,uuid,name:(display)),value:ref,groupMembers))';
-
             httpMock.expectNone({});
             const result = service.getEncounterByUuid(null);
 
@@ -132,7 +124,7 @@ describe('EncounterResourceService', () => {
         });
         xit('should call the right endpoint', () => {
             const patientUuid = 'uuid';
-            const _customDefaultRep = 'custom:(uuid,encounterDatetime,' +
+            const customDefaultRep = 'custom:(uuid,encounterDatetime,' +
                 'patient:(uuid,uuid,identifiers),form:(uuid,name),' +
                 'visit:(uuid,visitType,display,startDatetime,stopDatetime),' +
                 'location:ref,encounterType:ref,encounterProviders:(uuid,display' +
@@ -142,7 +134,7 @@ describe('EncounterResourceService', () => {
             service.getEncounterByUuid(patientUuid).subscribe((res) => {
                 expect(res).toEqual(encounterResponse);
             });
-            const request = httpMock.expectOne(service.getUrl() + 'encounter/' + patientUuid + '?v=' + _customDefaultRep);
+            const request = httpMock.expectOne(service.getUrl() + 'encounter/' + patientUuid + '?v=' + customDefaultRep);
             expect(request.request.method).toBe('GET');
             request.flush(encounterResponse);
 
@@ -151,24 +143,24 @@ describe('EncounterResourceService', () => {
     });
     describe('get Encounter types', () => {
         const encounterTypeResponse = {
-            'results': [
+            results: [
                 {
-                    'uuid': 'df5549ce-1350-11df-a1f1-0026b9348838',
-                    'display': 'ADHERENCEREINITIAL',
-                    'links': [
+                    uuid: 'df5549ce-1350-11df-a1f1-0026b9348838',
+                    display: 'ADHERENCEREINITIAL',
+                    links: [
                         {
-                            'rel': 'self',
-                            'uri': 'https://amrs.ampath.or.ke:8443/'
+                            rel: 'self',
+                            uri: 'https://amrs.ampath.or.ke:8443/'
                         }
                     ]
                 },
                 {
-                    'uuid': 'df5548c0-1350-11df-a1f1-0026b9348838',
-                    'display': 'ADHERENCERETURN',
-                    'links': [
+                    uuid: 'df5548c0-1350-11df-a1f1-0026b9348838',
+                    display: 'ADHERENCERETURN',
+                    links: [
                         {
-                            'rel': 'self',
-                            'uri': 'https://amrs.ampath.or.ke:8443/'
+                            rel: 'self',
+                            uri: 'https://amrs.ampath.or.ke:8443/'
                         }
                     ]
                 }
@@ -203,26 +195,26 @@ describe('EncounterResourceService', () => {
             encounterType: '927d9d1f-44ce-471e-a77b-d1f1342f43f6'
         };
         const newEncounterResponse = {
-            'uuid': '927d9d1f-44ce-471e-a77b-d1f1342f43f6',
-            'display': 'PEDSRETURN 23/11/2010',
-            'encounterDatetime': '2010-11-23T00:00:00.000+0300',
-            'patient': {
-                'uuid': '922fc86d-ad42-4c50-98a6-b1f310863c07',
-                'display': '',
-                'links': [
+            uuid: '927d9d1f-44ce-471e-a77b-d1f1342f43f6',
+            display: 'PEDSRETURN 23/11/2010',
+            encounterDatetime: '2010-11-23T00:00:00.000+0300',
+            patient: {
+                uuid: '922fc86d-ad42-4c50-98a6-b1f310863c07',
+                display: '',
+                links: [
                     {
-                        'uri': 'https://test1.ampath.or.ke:8443/amrs/ws/rest/v1/',
-                        'rel': 'self'
+                        uri: 'https://test1.ampath.or.ke:8443/amrs/ws/rest/v1/',
+                        rel: 'self'
                     }
                 ]
             },
-            'location': {
-                'uuid': '08feb5b6-1352-11df-a1f1-0026b9348838',
-                'display': 'Location-5',
-                'links': [
+            location: {
+                uuid: '08feb5b6-1352-11df-a1f1-0026b9348838',
+                display: 'Location-5',
+                links: [
                     {
-                        'uri': 'https://test1.ampath.or.ke:8443/amrs/ws/rest/v1',
-                        'rel': 'self'
+                        uri: 'https://test1.ampath.or.ke:8443/amrs/ws/rest/v1',
+                        rel: 'self'
                     }
                 ]
             }
@@ -253,26 +245,26 @@ describe('EncounterResourceService', () => {
             encounterType: '927d9d1f-44ce-471e-a77b-d1f1342f43f6'
         };
         const encounterResponse = {
-            'uuid': '927d9d1f-44ce-471e-a77b-d1f1342f43f6',
-            'display': 'PEDSRETURN 23/11/2010',
-            'encounterDatetime': '2010-11-23T00:00:00.000+0300',
-            'patient': {
-                'uuid': '922fc86d-ad42-4c50-98a6-b1f310863c07',
-                'display': '',
-                'links': [
+            uuid: '927d9d1f-44ce-471e-a77b-d1f1342f43f6',
+            display: 'PEDSRETURN 23/11/2010',
+            encounterDatetime: '2010-11-23T00:00:00.000+0300',
+            patient: {
+                uuid: '922fc86d-ad42-4c50-98a6-b1f310863c07',
+                display: '',
+                links: [
                     {
-                        'uri': 'https://test1.ampath.or.ke:8443/amrs/ws/rest',
-                        'rel': 'self'
+                        uri: 'https://test1.ampath.or.ke:8443/amrs/ws/rest',
+                        rel: 'self'
                     }
                 ]
             },
-            'location': {
-                'uuid': '08feb5b6-1352-11df-a1f1-0026b9348838',
-                'display': 'Location-5',
-                'links': [
+            location: {
+                uuid: '08feb5b6-1352-11df-a1f1-0026b9348838',
+                display: 'Location-5',
+                links: [
                     {
-                        'uri': 'https://test1.ampath.or.ke:8443/amrs/ws/rest',
-                        'rel': 'self'
+                        uri: 'https://test1.ampath.or.ke:8443/amrs/ws/rest',
+                        rel: 'self'
                     }
                 ]
             }
