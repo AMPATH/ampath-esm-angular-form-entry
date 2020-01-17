@@ -17,7 +17,7 @@
   },
   "private": true,
   "dependencies": {
-    "@ampath-kenya/ngx-openmrs-formentry": "^3.0.0-alpha2",
+    "@ampath-kenya/ngx-openmrs-formentry": "^3.0.0-alpha3",
     "@angular-builders/custom-webpack": "^8",
     "@angular/animations": "~8.2.14",
     "@angular/common": "~8.2.14",
@@ -28,7 +28,6 @@
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
     "@openmrs/esm-api": "^1.2.1",
-    "bootstrap": "^3.3.7",
     "ngx-bootstrap": "next",
     "ngx-file-uploader": "0.0.18",
     "rxjs": "^6.5.3",
