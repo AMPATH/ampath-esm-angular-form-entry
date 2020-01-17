@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 
 import {
   QuestionFactory, FormFactory, ObsValueAdapter, OrderValueAdapter,
-  EncounterAdapter, DataSources, EncounterPdfViewerService, FormErrorsService, Form
+  EncounterAdapter, DataSources, FormErrorsService, Form
 } from '@ampath-kenya/ngx-openmrs-formentry/dist/ngx-formentry';
 
 import { OpenmrsEsmApiService } from '../openmrs-api/openmrs-esm-api.service';
@@ -40,7 +40,6 @@ export class FeWrapperComponent implements OnInit {
     private dataSources: DataSources,
     private formDataSourceService: FormDataSourceService,
     private formSubmissionService: FormSubmissionService,
-    private encounterPdfViewerService: EncounterPdfViewerService,
     private formErrorsService: FormErrorsService) {
 
   }
