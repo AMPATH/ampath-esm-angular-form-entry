@@ -7,7 +7,7 @@ import { ɵAnimationEngine as AnimationEngine } from '@angular/animations/browse
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import singleSpaAngular from 'single-spa-angular';
-import { singleSpaPropsSubject } from './single-spa/single-spa-props';
+import { singleSpaPropsSubject, SingleSpaProps } from './single-spa/single-spa-props';
 
 if (environment.production) {
   enableProdMode();
@@ -16,7 +16,7 @@ if (environment.production) {
 const lifecycles = singleSpaAngular({
   bootstrapFunction: singleSpaProps => {
     // console.log(singleSpaProps);
-    singleSpaPropsSubject.next(singleSpaProps);
+    singleSpaPropsSubject.next(singleSpaProps as SingleSpaProps);
     return platformBrowserDynamic().bootstrapModule(AppModule);
   },
   template: '<my-app-root />',
