@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
+import { singleSpaPropsSubject, SingleSpaProps } from 'src/single-spa/single-spa-props';
+
 import {
   QuestionFactory, FormFactory, ObsValueAdapter, OrderValueAdapter,
   EncounterAdapter, DataSources, FormErrorsService, Form
@@ -28,6 +30,7 @@ export class FeWrapperComponent implements OnInit {
   formUuid: string;
   formSchema: any;
   patient: any;
+  loadingError: string;
 
   constructor(
     private openmrsApi: OpenmrsEsmApiService,
@@ -51,6 +54,7 @@ export class FeWrapperComponent implements OnInit {
       }, (err) => {
         // TODO: Handle errors
         console.error('Error rendering form', err);
+        this.loadingError = 'Error loading form';
       });
   }
 
@@ -72,27 +76,48 @@ export class FeWrapperComponent implements OnInit {
     this.navigateToPatientChart();
   }
 
-  public getFormUuidFromUrl() {
-    const match = /\/formentry\/([a-zA-Z0-9\-]+)\/?/.exec(location.pathname);
-    return match && match[1];
+  public getFormUuid(): Observable<string> {
+    const subject = new ReplaySubject<string>(1);
+    singleSpaPropsSubject
+      .pipe(take(1))
+      .subscribe((props) => {
+        const formUuid = props.formUuid;
+        if (formUuid && formUuid !== null && typeof formUuid === 'string' && formUuid.trim().length !== 0) {
+          subject.next(formUuid);
+        } else {
+          subject.error('Form UUID is required. props.formUuid missing');
+        }
+      }, (err) => {
+        subject.error(err);
+      });
+    return subject.asObservable();
   }
 
   public launchForm(uuid: string = null): Observable<Form> {
     const subject = new ReplaySubject<Form>(1);
+    const loadForm = () => {
+      this.loadAllFormDependencies()
+        .pipe(take(1))
+        .subscribe((data) => {
+          this.createForm();
+          subject.next(this.form);
+        }, (err) => {
+          subject.error(err);
+        });
+    };
     if (uuid === null) {
-      this.formUuid = this.getFormUuidFromUrl();
+      this.getFormUuid()
+        .pipe(take(1))
+        .subscribe((formUuid) => {
+          this.formUuid = formUuid;
+          loadForm();
+        }, (err) => {
+          subject.error(err);
+        });
     } else {
       this.formUuid = uuid;
+      loadForm();
     }
-
-    this.loadAllFormDependencies()
-      .pipe(take(1))
-      .subscribe((data) => {
-        this.createForm();
-        subject.next(this.form);
-      }, (err) => {
-        subject.error(err);
-      });
     return subject.asObservable();
   }
 

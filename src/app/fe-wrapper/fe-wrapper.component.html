@@ -1,5 +1,6 @@
 <!-- <h1>Adult Return Form</h1> -->
 <h4 style="margin-left: 20px; margin-top:0px; margin-bottom:0px;">{{ formName }}</h4>
+<div style="color: var(--omrs-color-danger);">{{ loadingError }}</div>
 <div class="container-fluid scoped-bootstrap" style="margin:5px; margin-left: 20px; margin-top:0px;">
     <!-- <error-renderer [form]="form"></error-renderer> -->
     <form *ngIf="formSchema" [formGroup]="form.rootNode.control">
