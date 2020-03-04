@@ -34,7 +34,7 @@ export class FeWrapperComponent implements OnInit {
   formSchema: any;
   patient: any;
   loadingError: string;
-
+  formSubmitted:boolean = false;
   constructor(
     private openmrsApi: OpenmrsEsmApiService,
     private formSchemaService: FormSchemaService,
@@ -67,8 +67,8 @@ export class FeWrapperComponent implements OnInit {
       this.saveForm()
         .subscribe(
           response => {
-            // TODO: Handle Successful
-            console.log('Form submitted', response);
+            console.log('submitted', response);
+            this.formSubmitted = true;
           }, error => {
             console.error('Error submitting form', error);
           });

@@ -3,9 +3,11 @@
 <div style="color: var(--omrs-color-danger);">{{ loadingError }}</div>
 <div class="container-fluid scoped-bootstrap" style="margin:5px; margin-left: 20px; margin-top:0px;">
     <!-- <error-renderer [form]="form"></error-renderer> -->
-    <form *ngIf="formSchema" [formGroup]="form.rootNode.control">
+    <h4 *ngIf="encounter" style="color: var(--omrs-color-ink-medium-contrast);">Editing Form: Encounter for {{encounter.encounterDatetime}}</h4>
+    <form *ngIf="formSchema && !formSubmitted" [formGroup]="form.rootNode.control">
         <form-renderer [node]="form.rootNode"></form-renderer>
         <input type="submit" value="Save" (click)="onSubmit($event)"  class="omrs-btn omrs-filled-action">
         <input type="button" value="Cancel" (click)="onCancel()" class="omrs-btn omrs-outlined-destructive pull-right">
     </form>
+    <formentry-form-submitted *ngIf="formSubmitted"></formentry-form-submitted>
 </div>
