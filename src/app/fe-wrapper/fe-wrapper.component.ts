@@ -11,9 +11,10 @@ import {
 import { OpenmrsEsmApiService } from '../openmrs-api/openmrs-esm-api.service';
 import { FormSchemaService } from '../form-schema/form-schema.service';
 import { FormDataSourceService } from '../form-data-source/form-data-source.service';
-import { Observable, forkJoin, ReplaySubject } from 'rxjs';
+import { Observable, forkJoin, ReplaySubject, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { FormSubmissionService } from '../form-submission/form-submission.service';
+import { EncounterResourceService } from '../openmrs-api/encounter-resource.service';
 
 @Component({
   selector: 'my-app-fe-wrapper',
@@ -28,6 +29,8 @@ export class FeWrapperComponent implements OnInit {
   form: Form;
   formName: string;
   formUuid: string;
+  encounterUuid: string;
+  encounter: any;
   formSchema: any;
   patient: any;
   loadingError: string;
@@ -35,6 +38,7 @@ export class FeWrapperComponent implements OnInit {
   constructor(
     private openmrsApi: OpenmrsEsmApiService,
     private formSchemaService: FormSchemaService,
+    private encounterResourceService: EncounterResourceService,
     private questionFactory: QuestionFactory,
     private formFactory: FormFactory,
     private obsValueAdapater: ObsValueAdapter,
@@ -76,24 +80,24 @@ export class FeWrapperComponent implements OnInit {
     this.navigateToPatientChart();
   }
 
-  public getFormUuid(): Observable<string> {
-    const subject = new ReplaySubject<string>(1);
+  public getProps(): Observable<SingleSpaProps> {
+    const subject = new ReplaySubject<SingleSpaProps>(1);
     singleSpaPropsSubject
       .pipe(take(1))
       .subscribe((props) => {
         const formUuid = props.formUuid;
-        if (formUuid && formUuid !== null && typeof formUuid === 'string' && formUuid.trim().length !== 0) {
-          subject.next(formUuid);
-        } else {
+        if (!(formUuid && typeof formUuid === 'string')) {
           subject.error('Form UUID is required. props.formUuid missing');
+          return;
         }
+        subject.next(props);
       }, (err) => {
         subject.error(err);
       });
     return subject.asObservable();
   }
 
-  public launchForm(uuid: string = null): Observable<Form> {
+  public launchForm(): Observable<Form> {
     const subject = new ReplaySubject<Form>(1);
     const loadForm = () => {
       this.loadAllFormDependencies()
@@ -105,19 +109,19 @@ export class FeWrapperComponent implements OnInit {
           subject.error(err);
         });
     };
-    if (uuid === null) {
-      this.getFormUuid()
-        .pipe(take(1))
-        .subscribe((formUuid) => {
-          this.formUuid = formUuid;
-          loadForm();
-        }, (err) => {
-          subject.error(err);
-        });
-    } else {
-      this.formUuid = uuid;
-      loadForm();
-    }
+
+    this.getProps()
+      .pipe(take(1))
+      .subscribe((props) => {
+        this.formUuid = props.formUuid;
+        if (props.encounterUuid) {
+          this.encounterUuid = props.encounterUuid;
+        }
+        loadForm();
+      }, (err) => {
+        subject.error(err);
+      });
+
     return subject.asObservable();
   }
 
@@ -126,13 +130,18 @@ export class FeWrapperComponent implements OnInit {
     const observableBatch: Array<Observable<any>> = [];
     observableBatch.push(this.fetchCompiledFormSchema(this.formUuid).pipe(take(1)));
     observableBatch.push(this.getCurrentPatient().pipe(take(1)));
+    if (this.encounterUuid) {
+      observableBatch.push(this.getEncounterToEdit(this.encounterUuid).pipe(take(1)));
+    }
     forkJoin(observableBatch)
       .subscribe((data: any) => {
         this.formSchema = data[0] || null;
         this.patient = data[1] || null;
+        this.encounter = data[2] || null;
         const formData = {
           formSchema: data[0],
-          patient: data[1]
+          patient: data[1],
+          encounter: data.length === 3 ? data[2] : null
         };
         console.log('Loaded form dependencies', formData);
         trackingSubject.next(formData);
@@ -161,10 +170,24 @@ export class FeWrapperComponent implements OnInit {
     return this.openmrsApi.getCurrentPatient();
   }
 
+  private getEncounterToEdit(encounterUuid: string): Observable<any> {
+    const subject = new ReplaySubject<any>(1);
+    const sub: Subscription = this.encounterResourceService.getEncounterByUuid(encounterUuid)
+      .subscribe(encounter => {
+        subject.next(encounter);
+        sub.unsubscribe();
+      }, error => {
+        subject.error(error);
+        sub.unsubscribe();
+      });
+    return subject.asObservable();
+  }
+
   private createForm() {
     this.wireDataSources();
     this.formName = this.formSchema.name;
     this.form = this.formFactory.createForm(this.formSchema, this.dataSources.dataSources);
+    this.populateEncounterForEditing();
     this.setUpPayloadProcessingInformation();
   }
 
@@ -195,6 +218,15 @@ export class FeWrapperComponent implements OnInit {
       this.form.valueProcessingInfo.encounterTypeUuid = this.formSchema.encounterType.uuid;
     } else {
       throw new Error('Please associate the form with an encounter type.');
+    }
+    if (this.encounterUuid) {
+      this.form.valueProcessingInfo.encounterUuid = this.encounterUuid;
+    }
+  }
+
+  private populateEncounterForEditing() {
+    if (this.encounter) {
+      this.encAdapter.populateForm(this.form, this.encounter);
     }
   }
 
