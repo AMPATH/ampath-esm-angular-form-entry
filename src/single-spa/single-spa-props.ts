@@ -7,4 +7,5 @@ export const singleSpaPropsSubject = new ReplaySubject<SingleSpaProps>(1);
 // https://single-spa.js.org/docs/building-applications.html#custom-props
 export type SingleSpaProps = AppProps & {
     formUuid: string;
+    encounterUuid?: string;
 };
