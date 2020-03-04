@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import * as moment from 'moment';
 
 import { singleSpaPropsSubject, SingleSpaProps } from 'src/single-spa/single-spa-props';
 
@@ -35,6 +36,15 @@ export class FeWrapperComponent implements OnInit {
   patient: any;
   loadingError: string;
   formSubmitted:boolean = false;
+
+  public get encounterDate(): string {
+    return moment(this.encounter.encounterDatetime).format('YYYY-MM-DD');
+  }
+
+  public get encounterTime(): string {
+    return moment(this.encounter.encounterDatetime).format('HH:mm');
+  }
+
   constructor(
     private openmrsApi: OpenmrsEsmApiService,
     private formSchemaService: FormSchemaService,
