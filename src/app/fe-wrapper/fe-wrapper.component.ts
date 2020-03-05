@@ -35,7 +35,8 @@ export class FeWrapperComponent implements OnInit {
   formSchema: any;
   patient: any;
   loadingError: string;
-  formSubmitted:boolean = false;
+  formSubmitted = false;
+  singleSpaProps: SingleSpaProps;
 
   public get encounterDate(): string {
     return moment(this.encounter.encounterDatetime).format('YYYY-MM-DD');
@@ -86,8 +87,7 @@ export class FeWrapperComponent implements OnInit {
   }
 
   public onCancel() {
-    // TODO: confirm cancelation
-    this.navigateToPatientChart();
+    this.singleSpaProps.closeComponent();
   }
 
   public getProps(): Observable<SingleSpaProps> {
@@ -95,6 +95,7 @@ export class FeWrapperComponent implements OnInit {
     singleSpaPropsSubject
       .pipe(take(1))
       .subscribe((props) => {
+        this.singleSpaProps = props;
         const formUuid = props.formUuid;
         if (!(formUuid && typeof formUuid === 'string')) {
           subject.error('Form UUID is required. props.formUuid missing');
@@ -238,10 +239,6 @@ export class FeWrapperComponent implements OnInit {
     if (this.encounter) {
       this.encAdapter.populateForm(this.form, this.encounter);
     }
-  }
-
-  private navigateToPatientChart() {
-
   }
 
   // check validity of form
