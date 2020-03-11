@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import * as moment from 'moment';
 
 import { singleSpaPropsSubject, SingleSpaProps } from 'src/single-spa/single-spa-props';
 
@@ -34,6 +35,16 @@ export class FeWrapperComponent implements OnInit {
   formSchema: any;
   patient: any;
   loadingError: string;
+  formSubmitted = false;
+  singleSpaProps: SingleSpaProps;
+
+  public get encounterDate(): string {
+    return moment(this.encounter.encounterDatetime).format('YYYY-MM-DD');
+  }
+
+  public get encounterTime(): string {
+    return moment(this.encounter.encounterDatetime).format('HH:mm');
+  }
 
   constructor(
     private openmrsApi: OpenmrsEsmApiService,
@@ -67,8 +78,8 @@ export class FeWrapperComponent implements OnInit {
       this.saveForm()
         .subscribe(
           response => {
-            // TODO: Handle Successful
-            console.log('Form submitted', response);
+            this.encounterUuid = response[0].uuid;
+            this.formSubmitted = true;
           }, error => {
             console.error('Error submitting form', error);
           });
@@ -76,8 +87,31 @@ export class FeWrapperComponent implements OnInit {
   }
 
   public onCancel() {
-    // TODO: confirm cancelation
-    this.navigateToPatientChart();
+    this.singleSpaProps.closeComponent();
+  }
+
+  public onEditSaved() {
+    this.singleSpaProps.encounterUuid = this.encounterUuid;
+    singleSpaPropsSubject.next(this.singleSpaProps);
+    this.resetVariables();
+    this.ngOnInit();
+  }
+
+  public resetVariables() {
+    this.data = undefined;
+    this.sections = {};
+    this.formGroup = undefined;
+    this.activeTab = 0;
+    this.form = undefined;
+    this.formName = undefined;
+    this.formUuid = undefined;
+    this.encounterUuid = undefined;
+    this.encounter = undefined;
+    this.formSchema = undefined;
+    this.patient = undefined;
+    this.loadingError = undefined;
+    this.formSubmitted = false;
+    this.singleSpaProps = undefined;
   }
 
   public getProps(): Observable<SingleSpaProps> {
@@ -85,6 +119,7 @@ export class FeWrapperComponent implements OnInit {
     singleSpaPropsSubject
       .pipe(take(1))
       .subscribe((props) => {
+        this.singleSpaProps = props;
         const formUuid = props.formUuid;
         if (!(formUuid && typeof formUuid === 'string')) {
           subject.error('Form UUID is required. props.formUuid missing');
@@ -228,10 +263,6 @@ export class FeWrapperComponent implements OnInit {
     if (this.encounter) {
       this.encAdapter.populateForm(this.form, this.encounter);
     }
-  }
-
-  private navigateToPatientChart() {
-
   }
 
   // check validity of form

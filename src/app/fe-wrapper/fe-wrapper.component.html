@@ -1,11 +1,24 @@
-<!-- <h1>Adult Return Form</h1> -->
-<h4 style="margin-left: 20px; margin-top:0px; margin-bottom:0px;">{{ formName }}</h4>
-<div style="color: var(--omrs-color-danger);">{{ loadingError }}</div>
-<div class="container-fluid scoped-bootstrap" style="margin:5px; margin-left: 20px; margin-top:0px;">
+<div class="error-text">{{ loadingError }}</div>
+<div class="form-title">
+    <span *ngIf="encounter" class="omrs-type-body-small" style="color: var(--omrs-color-ink-medium-contrast);">
+        <svg class="omrs-icon title-icon-size" fill="var(--omrs-color-ink-low-contrast)">
+            <use xlink:href="#omrs-icon-calendar"></use>
+        </svg>
+        {{encounterDate + " "}} 
+        <svg class="omrs-icon title-icon-size" fill="var(--omrs-color-ink-low-contrast)">
+            <use xlink:href="#omrs-icon-access-time"></use>
+        </svg>
+        {{encounterTime}}
+    </span>
+</div>
+<div *ngIf="!formSubmitted" class="container-fluid scoped-bootstrap form-container">
     <!-- <error-renderer [form]="form"></error-renderer> -->
     <form *ngIf="formSchema" [formGroup]="form.rootNode.control">
         <form-renderer [node]="form.rootNode"></form-renderer>
-        <input type="submit" value="Save" (click)="onSubmit($event)"  class="omrs-btn omrs-filled-action">
+        <input type="submit" value="Save" (click)="onSubmit($event)" class="omrs-btn omrs-filled-action">
         <input type="button" value="Cancel" (click)="onCancel()" class="omrs-btn omrs-outlined-destructive pull-right">
     </form>
+</div>
+<div class="form-container">
+    <my-app-form-submitted *ngIf="formSubmitted" (cancelled)="onCancel()" (editRequested)="onEditSaved()" ></my-app-form-submitted>
 </div>

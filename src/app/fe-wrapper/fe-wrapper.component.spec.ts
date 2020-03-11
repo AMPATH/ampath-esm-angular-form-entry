@@ -12,6 +12,7 @@ import { OpenmrsApiModule } from '../openmrs-api/openmrs-api.module';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { FormDataSourceService } from '../form-data-source/form-data-source.service';
 import { FormSubmissionService } from '../form-submission/form-submission.service';
+import { FormSubmittedComponent } from '../form-submitted/form-submitted.component';
 
 describe('FeWrapperComponent', () => {
   let component: FeWrapperComponent;
@@ -26,7 +27,7 @@ describe('FeWrapperComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FeWrapperComponent ],
+      declarations: [ FeWrapperComponent, FormSubmittedComponent ],
       imports: [
         BrowserModule,
         BrowserAnimationsModule,

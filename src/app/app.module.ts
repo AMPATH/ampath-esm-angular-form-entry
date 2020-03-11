@@ -13,12 +13,14 @@ import { FormSchemaService } from './form-schema/form-schema.service';
 import { LocalStorageService } from './local-storage/local-storage.service';
 import { FormDataSourceService } from './form-data-source/form-data-source.service';
 import { FormSubmissionService } from './form-submission/form-submission.service';
+import { FormSubmittedComponent } from './form-submitted/form-submitted.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EmptyRouteComponent,
-    FeWrapperComponent
+    FeWrapperComponent,
+    FormSubmittedComponent
   ],
   imports: [
     BrowserModule,
