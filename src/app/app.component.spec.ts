@@ -9,6 +9,7 @@ import { OpenmrsApiModule } from './openmrs-api/openmrs-api.module';
 import { LocalStorageService } from './local-storage/local-storage.service';
 import { FormDataSourceService } from './form-data-source/form-data-source.service';
 import { FormSubmissionService } from './form-submission/form-submission.service';
+import { FormSubmittedComponent } from './form-submitted/form-submitted.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -21,7 +22,8 @@ describe('AppComponent', () => {
       ],
       declarations: [
         AppComponent,
-        FeWrapperComponent
+        FeWrapperComponent,
+        FormSubmittedComponent
       ],
       providers: [
         FormSchemaService,

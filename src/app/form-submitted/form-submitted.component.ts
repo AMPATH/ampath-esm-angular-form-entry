@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 @Component({
-  selector: 'formentry-form-submitted',
+  selector: 'my-app-form-submitted',
   templateUrl: './form-submitted.component.html',
   styleUrls: ['./form-submitted.component.css']
 })
