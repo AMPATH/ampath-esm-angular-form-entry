@@ -78,7 +78,8 @@ export class FeWrapperComponent implements OnInit {
       this.saveForm()
         .subscribe(
           response => {
-            console.log('submitted', response);
+            console.log('response', response);
+            this.encounterUuid = response[0].uuid;
             this.formSubmitted = true;
           }, error => {
             console.error('Error submitting form', error);
@@ -88,6 +89,30 @@ export class FeWrapperComponent implements OnInit {
 
   public onCancel() {
     this.singleSpaProps.closeComponent();
+  }
+
+  public onEditSaved() {
+    this.singleSpaProps.encounterUuid = this.encounterUuid;
+    singleSpaPropsSubject.next(this.singleSpaProps);
+    this.resetVariables();
+    this.ngOnInit();
+  }
+
+  public resetVariables() {
+    this.data = undefined;
+    this.sections = {};
+    this.formGroup = undefined;
+    this.activeTab = 0;
+    this.form = undefined;
+    this.formName = undefined;
+    this.formUuid = undefined;
+    this.encounterUuid = undefined;
+    this.encounter = undefined;
+    this.formSchema = undefined;
+    this.patient = undefined;
+    this.loadingError = undefined;
+    this.formSubmitted = false;
+    this.singleSpaProps = undefined;
   }
 
   public getProps(): Observable<SingleSpaProps> {
