@@ -37,6 +37,7 @@ export class FeWrapperComponent implements OnInit {
   loadingError: string;
   formSubmitted = false;
   singleSpaProps: SingleSpaProps;
+  loggedInUser: LoggedInUser;
 
   public get encounterDate(): string {
     return moment(this.encounter.encounterDatetime).format('YYYY-MM-DD');
@@ -165,6 +166,7 @@ export class FeWrapperComponent implements OnInit {
     const observableBatch: Array<Observable<any>> = [];
     observableBatch.push(this.fetchCompiledFormSchema(this.formUuid).pipe(take(1)));
     observableBatch.push(this.getCurrentPatient().pipe(take(1)));
+    observableBatch.push(this.openmrsApi.getCurrentUserLocation().pipe(take(1)));
     if (this.encounterUuid) {
       observableBatch.push(this.getEncounterToEdit(this.encounterUuid).pipe(take(1)));
     }
@@ -172,11 +174,13 @@ export class FeWrapperComponent implements OnInit {
       .subscribe((data: any) => {
         this.formSchema = data[0] || null;
         this.patient = data[1] || null;
-        this.encounter = data[2] || null;
+        this.loggedInUser = data[2] || null;
+        this.encounter = data[3] || null;
         const formData = {
           formSchema: data[0],
           patient: data[1],
-          encounter: data.length === 3 ? data[2] : null
+          user: data[2],
+          encounter: data.length === 4 ? data[2] : null
         };
         console.log('Loaded form dependencies', formData);
         trackingSubject.next(formData);
@@ -222,7 +226,11 @@ export class FeWrapperComponent implements OnInit {
     this.wireDataSources();
     this.formName = this.formSchema.name;
     this.form = this.formFactory.createForm(this.formSchema, this.dataSources.dataSources);
-    this.populateEncounterForEditing();
+    if (this.encounter) {
+      this.populateEncounterForEditing();
+    } else {
+      this.setDefaultValues();
+    }
     this.setUpPayloadProcessingInformation();
   }
 
@@ -243,6 +251,30 @@ export class FeWrapperComponent implements OnInit {
     // TODO: Fix the patient datasource object to work with FHIR
     // this.dataSources.registerDataSource('patient',
     //   this.formDataSourceService.getPatientObject(this.patient), true);
+  }
+
+  private setDefaultValues() {
+    // encounter date and time
+    const currentDate = moment().format();
+    const encounterDate = this.form.searchNodeByQuestionId('encDate');
+    if (encounterDate.length > 0) {
+        encounterDate[0].control.setValue(currentDate);
+    }
+
+    // location
+    const encounterLocation = this.form.searchNodeByQuestionId('location',
+      'encounterLocation');
+    if (encounterLocation.length > 0 && this.loggedInUser && this.loggedInUser.sessionLocation) {
+      // const location = { value: this.loggedInUser.sessionLocation.uuid, label: this.loggedInUser.sessionLocation.display };
+      encounterLocation[0].control.setValue(this.loggedInUser.sessionLocation.uuid);
+    }
+
+    // provider
+    const encounterProvider = this.form.searchNodeByQuestionId('provider',
+      'encounterProvider');
+    if (encounterProvider.length > 0 && this.loggedInUser && this.loggedInUser.currentProvider) {
+      encounterProvider[0].control.setValue(this.loggedInUser.currentProvider.uuid);
+    }
   }
 
   private setUpPayloadProcessingInformation() {
@@ -273,4 +305,18 @@ export class FeWrapperComponent implements OnInit {
   private saveForm(): Observable<any> {
     return this.formSubmissionService.submitPayload(this.form);
   }
+}
+
+export interface LoggedInUser {
+  user: any;
+  currentProvider: {
+    uuid: string;
+    display: string;
+    identifier: string;
+  };
+  sessionLocation: {
+    uuid: string;
+    name: string;
+    display: string;
+  };
 }
