@@ -209,7 +209,7 @@ export class FormSubmissionService {
 
   private getProviderUuid(providers, form: Form): string {
     const encounterProvider = form.searchNodeByQuestionId('provider');
-    let personUuid = '';
+    let personUuid: string  = null;
     if (encounterProvider.length > 0) {
       personUuid = encounterProvider[0].control.value;
     }
@@ -224,7 +224,7 @@ export class FormSubmissionService {
     if (filtered.length > 0) {
       return filtered[0].providerUuid;
     }
-    return null;
+    return personUuid;
   }
 
   private setProviderUuid(form: Form, providerUuid: string): Form {
