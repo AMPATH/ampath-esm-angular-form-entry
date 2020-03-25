@@ -1,10 +1,5 @@
-/* #root-element {
-    position: absolute;
-    z-index: 0;
-} */
-
 .form-title {
-    margin-left: 20px;
+    margin-left: 2px;
     margin-right: 2px;
     margin-top:8px;
     margin-bottom:0px;
@@ -18,11 +13,65 @@
 
 .form-container {
     margin:5px;
-    margin-left: 20px;
+    margin-left: 2px;
     margin-top:0px;
+}
+
+.error {
+    margin-left: 30px !important;
 }
 
 .title-icon-size {
     height:0.8rem;
     width:0.8rem;
+}
+
+.main-container {
+    display: flex;
+    position: relative;
+    height: 100vh;
+}
+
+.sidebar {
+    z-index: 1;
+    background-color: white;
+    border: solid 1px var(--omrs-color-danger);
+    margin-left: -28px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: width 0s, height 0.2s;
+}
+.no-errors {
+    display: none;
+}
+.sidebar.open {
+    /* margin-top: 1px; */
+    width: 55%;
+    height: 80%;
+    padding: 4px;
+}
+.sidebar.closed {
+    height: 80px;
+    width: 28px;
+}
+.error-content.closed {
+    display: none;
+}
+
+.error-title.closed {
+    transform: rotate(90deg);
+    margin-top: 14px;
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+.ul.list-group {
+    margin-left: -60px;
 }

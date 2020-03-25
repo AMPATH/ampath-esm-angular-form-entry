@@ -38,6 +38,8 @@ export class FeWrapperComponent implements OnInit {
   formSubmitted = false;
   singleSpaProps: SingleSpaProps;
   loggedInUser: LoggedInUser;
+  triedSubmitting = false;
+  errorPanelOpen = false;
 
   public get encounterDate(): string {
     return moment(this.encounter.encounterDatetime).format('YYYY-MM-DD');
@@ -45,6 +47,10 @@ export class FeWrapperComponent implements OnInit {
 
   public get encounterTime(): string {
     return moment(this.encounter.encounterDatetime).format('HH:mm');
+  }
+
+  public get hasValidationErrors(): boolean {
+    return this.triedSubmitting &&  this.form && !this.form.valid;
   }
 
   constructor(
@@ -75,6 +81,8 @@ export class FeWrapperComponent implements OnInit {
   }
 
   public onSubmit(event: any) {
+    this.triedSubmitting = true;
+    this.form.showErrors = true;
     if (this.isFormvalid()) {
       this.saveForm()
         .subscribe(
@@ -96,6 +104,14 @@ export class FeWrapperComponent implements OnInit {
     singleSpaPropsSubject.next(this.singleSpaProps);
     this.resetVariables();
     this.ngOnInit();
+  }
+
+  public onExpandCollapseErrorPanel($event) {
+    this.errorPanelOpen = !this.errorPanelOpen;
+  }
+
+  public onErrorPanelLostFocus() {
+    this.errorPanelOpen = false;
   }
 
   public resetVariables() {
