@@ -299,6 +299,9 @@ export class FeWrapperComponent implements OnInit {
 
   // check validity of form
   private isFormvalid(): boolean {
+    if (!this.form.valid) {
+      this.form.markInvalidControls(this.form.rootNode);
+    }
     return this.form.valid;
   }
 
