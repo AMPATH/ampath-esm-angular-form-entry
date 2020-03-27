@@ -14,7 +14,7 @@
 <div *ngIf="!formSubmitted" class="container-fluid scoped-bootstrap form-container" [ngClass]="{'error': hasValidationErrors}">
     <!-- <error-renderer [form]="form"></error-renderer> -->
     <div  class="main-container">
-        <div class="sidebar" (click)="onExpandCollapseErrorPanel()" [ngClass]="{'no-errors': !hasValidationErrors, 'open': errorPanelOpen, 'closed': !errorPanelOpen }">
+        <div class="sidebar" (click)="onExpandCollapseErrorPanel($event)" [ngClass]="{'no-errors': !hasValidationErrors, 'open': errorPanelOpen, 'closed': !errorPanelOpen }">
             <div class="error-text error-title" [ngClass]="{'closed': !errorPanelOpen }">Errors</div>
             <br/>
             <div class="error-content" [ngClass]="{'closed': !errorPanelOpen }">

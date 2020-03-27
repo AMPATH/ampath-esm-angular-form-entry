@@ -81,7 +81,7 @@ export class FeWrapperComponent implements OnInit {
   }
 
   public onSubmit(event: any) {
-    if (this.isFormvalid()) {
+    if (this.isFormValid()) {
       this.saveForm()
         .subscribe(
           response => {
@@ -318,7 +318,7 @@ export class FeWrapperComponent implements OnInit {
   }
 
   // check validity of form
-  private isFormvalid(): boolean {
+  private isFormValid(): boolean {
     if (!this.form.valid) {
       this.form.markInvalidControls(this.form.rootNode);
     }
