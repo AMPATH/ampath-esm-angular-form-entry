@@ -38,6 +38,8 @@ export class FeWrapperComponent implements OnInit {
   formSubmitted = false;
   singleSpaProps: SingleSpaProps;
   loggedInUser: LoggedInUser;
+  triedSubmitting = false;
+  errorPanelOpen = false;
 
   public get encounterDate(): string {
     return moment(this.encounter.encounterDatetime).format('YYYY-MM-DD');
@@ -45,6 +47,10 @@ export class FeWrapperComponent implements OnInit {
 
   public get encounterTime(): string {
     return moment(this.encounter.encounterDatetime).format('HH:mm');
+  }
+
+  public get hasValidationErrors(): boolean {
+    return this.triedSubmitting && this.form && !this.form.valid;
   }
 
   constructor(
@@ -75,7 +81,7 @@ export class FeWrapperComponent implements OnInit {
   }
 
   public onSubmit(event: any) {
-    if (this.isFormvalid()) {
+    if (this.isFormValid()) {
       this.saveForm()
         .subscribe(
           response => {
@@ -84,6 +90,12 @@ export class FeWrapperComponent implements OnInit {
           }, error => {
             console.error('Error submitting form', error);
           });
+    } else {
+      this.triedSubmitting = true;
+      this.form.showErrors = true;
+      setTimeout(() => {
+        this.errorPanelOpen = true;
+      }, 10);
     }
   }
 
@@ -96,6 +108,14 @@ export class FeWrapperComponent implements OnInit {
     singleSpaPropsSubject.next(this.singleSpaProps);
     this.resetVariables();
     this.ngOnInit();
+  }
+
+  public onExpandCollapseErrorPanel($event) {
+    this.errorPanelOpen = !this.errorPanelOpen;
+  }
+
+  public onErrorPanelLostFocus() {
+    this.errorPanelOpen = false;
   }
 
   public resetVariables() {
@@ -258,7 +278,7 @@ export class FeWrapperComponent implements OnInit {
     const currentDate = moment().format();
     const encounterDate = this.form.searchNodeByQuestionId('encDate');
     if (encounterDate.length > 0) {
-        encounterDate[0].control.setValue(currentDate);
+      encounterDate[0].control.setValue(currentDate);
     }
 
     // location
@@ -298,7 +318,10 @@ export class FeWrapperComponent implements OnInit {
   }
 
   // check validity of form
-  private isFormvalid(): boolean {
+  private isFormValid(): boolean {
+    if (!this.form.valid) {
+      this.form.markInvalidControls(this.form.rootNode);
+    }
     return this.form.valid;
   }
 
