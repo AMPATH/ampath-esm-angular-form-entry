@@ -50,7 +50,7 @@ export class FeWrapperComponent implements OnInit {
   }
 
   public get hasValidationErrors(): boolean {
-    return this.triedSubmitting &&  this.form && !this.form.valid;
+    return this.triedSubmitting && this.form && !this.form.valid;
   }
 
   constructor(
@@ -81,8 +81,6 @@ export class FeWrapperComponent implements OnInit {
   }
 
   public onSubmit(event: any) {
-    this.triedSubmitting = true;
-    this.form.showErrors = true;
     if (this.isFormvalid()) {
       this.saveForm()
         .subscribe(
@@ -92,6 +90,12 @@ export class FeWrapperComponent implements OnInit {
           }, error => {
             console.error('Error submitting form', error);
           });
+    } else {
+      this.triedSubmitting = true;
+      this.form.showErrors = true;
+      setTimeout(() => {
+        this.errorPanelOpen = true;
+      }, 10);
     }
   }
 
@@ -274,7 +278,7 @@ export class FeWrapperComponent implements OnInit {
     const currentDate = moment().format();
     const encounterDate = this.form.searchNodeByQuestionId('encDate');
     if (encounterDate.length > 0) {
-        encounterDate[0].control.setValue(currentDate);
+      encounterDate[0].control.setValue(currentDate);
     }
 
     // location

@@ -35,28 +35,36 @@
 .sidebar {
     z-index: 1;
     background-color: white;
-    border: solid 1px var(--omrs-color-danger);
-    margin-left: -28px;
-    position: absolute;
+    border: solid 1px lightgray;
+    margin-left: -29px;
+    position: sticky;
     top: 0;
     left: 0;
-    transition: width 0s, height 0.2s;
 }
 .no-errors {
     display: none;
 }
 .sidebar.open {
-    /* margin-top: 1px; */
+    margin-top: -1px;
     width: 55%;
     height: 80%;
     padding: 4px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 .sidebar.closed {
     height: 80px;
     width: 28px;
+    margin-top: -1px;
 }
 .error-content.closed {
     display: none;
+}
+
+.error-content {
+    border-top: 1px solid lightgray;
+    margin: -4px;
+    padding: 4px;
 }
 
 .error-title.closed {
@@ -72,6 +80,4 @@
   left: 0;
   z-index: 0;
 }
-.ul.list-group {
-    margin-left: -60px;
-}
+
