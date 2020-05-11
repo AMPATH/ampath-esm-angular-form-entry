@@ -14,13 +14,17 @@ import { LocalStorageService } from './local-storage/local-storage.service';
 import { FormDataSourceService } from './form-data-source/form-data-source.service';
 import { FormSubmissionService } from './form-submission/form-submission.service';
 import { FormSubmittedComponent } from './form-submitted/form-submitted.component';
+import { PrettyEncounterViewerComponent } from './pretty-encounter-viewier/pretty-encounter-viewer.component';
+import { EncounterViewerWrapperComponent } from './pretty-encounter-viewier/encounter-viewer-wrapper.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EmptyRouteComponent,
     FeWrapperComponent,
-    FormSubmittedComponent
+    FormSubmittedComponent,
+    PrettyEncounterViewerComponent,
+    EncounterViewerWrapperComponent
   ],
   imports: [
     BrowserModule,

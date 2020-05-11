@@ -13,6 +13,8 @@ import { LocalStorageService } from '../local-storage/local-storage.service';
 import { FormDataSourceService } from '../form-data-source/form-data-source.service';
 import { FormSubmissionService } from '../form-submission/form-submission.service';
 import { FormSubmittedComponent } from '../form-submitted/form-submitted.component';
+import { PrettyEncounterViewerComponent } from '../pretty-encounter-viewier/pretty-encounter-viewer.component';
+import { EncounterViewerWrapperComponent } from '../pretty-encounter-viewier/encounter-viewer-wrapper.component';
 
 describe('FeWrapperComponent', () => {
   let component: FeWrapperComponent;
@@ -27,7 +29,7 @@ describe('FeWrapperComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FeWrapperComponent, FormSubmittedComponent ],
+      declarations: [ FeWrapperComponent, FormSubmittedComponent, PrettyEncounterViewerComponent, EncounterViewerWrapperComponent ],
       imports: [
         BrowserModule,
         BrowserAnimationsModule,
