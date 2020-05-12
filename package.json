@@ -18,6 +18,7 @@
   "private": true,
   "dependencies": {
     "@ampath-kenya/ngx-openmrs-formentry": "^3.0.0-alpha4",
+    "@ampath-kenya/scoped-bootstrap": "^1.0.0-custom2",
     "@angular-builders/custom-webpack": "^8",
     "@angular/animations": "~8.2.14",
     "@angular/common": "~8.2.14",
