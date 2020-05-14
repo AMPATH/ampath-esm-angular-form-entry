@@ -27,11 +27,11 @@ export class PrettyEncounterViewerComponent implements OnInit {
         }
     }
 
-    private selectedEncounter: any;
-    private form: Form;
-    private showLoader: boolean;
-    private error: boolean;
-    private errorMessage: string;
+    public selectedEncounter: any;
+    public form: Form;
+    public showLoader: boolean;
+    public error: boolean;
+    public errorMessage: string;
     private patient: any;
     private isHidden: any[];
     private loaderText: string;
