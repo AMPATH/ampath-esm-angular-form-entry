@@ -20,7 +20,6 @@ export class PrettyEncounterViewerComponent implements OnInit {
     private _encounterUuid: string;
     @Input()
     public set encounterUuid(encounterUuid: string) {
-        console.log('setting uuid for encounter', encounterUuid);
         if (encounterUuid) {
             this._encounterUuid = encounterUuid;
             this.displayEncounterObs(this._encounterUuid);
@@ -33,8 +32,7 @@ export class PrettyEncounterViewerComponent implements OnInit {
     public error: boolean;
     public errorMessage: string;
     private patient: any;
-    private isHidden: any[];
-    private loaderText: string;
+    public loaderText: string;
 
     constructor(private encounterResourceService: EncounterResourceService,
                 private formSchemaService: FormSchemaService,
@@ -46,7 +44,6 @@ export class PrettyEncounterViewerComponent implements OnInit {
                 private formDataSourceService: FormDataSourceService) { }
 
     public ngOnInit() {
-        console.log('Loaded Component');
     }
 
     public wireDataSources() {
@@ -74,7 +71,6 @@ export class PrettyEncounterViewerComponent implements OnInit {
         this.form = undefined;
         this.encounterResourceService.getEncounterByUuid(encounterUuid).pipe(
             flatMap((encounterWithObs) => {
-                console.log('Fetched encounters', encounterWithObs);
                 this.patient = encounterWithObs.patient;
                 this.selectedEncounter = encounterWithObs;
                 this.wireDataSources();
@@ -90,7 +86,6 @@ export class PrettyEncounterViewerComponent implements OnInit {
                 }
             })).pipe(
             take(1)).subscribe((compiledSchema) => {
-                console.log('compiledSchema', compiledSchema);
                 const unpopulatedform = this.formFactory.createForm(compiledSchema, this.dataSources);
                 this.encounterAdapter.populateForm(unpopulatedform, this.selectedEncounter);
                 this.form = unpopulatedform;
