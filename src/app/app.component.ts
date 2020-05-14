@@ -1,25 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { singleSpaPropsSubject, SingleSpaProps } from 'src/single-spa/single-spa-props';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'my-app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'ampath-esm-angular-form-entry';
   view: string;
+  sub: Subscription;
   constructor() {
+  }
+  ngOnInit(): void {
     console.log('app loaded');
-    singleSpaPropsSubject.subscribe((prop) => {
-      console.log('singla spa', prop);
+    this.sub = singleSpaPropsSubject.subscribe((prop) => {
+      console.log('new singla spa props', prop);
       this.view = prop.view;
     }, (err) => {
 
     });
-  }
-  ngOnInit(): void {
 
+  }
+
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 }

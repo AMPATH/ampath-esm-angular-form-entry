@@ -5,7 +5,7 @@ import { EncounterAdapter, FormFactory, Form, DataSources } from '@ampath-kenya/
 import { FormDataSourceService } from '../form-data-source/form-data-source.service';
 // import { FileUploadResourceService } from '../../../etl-api/file-upload-resource.service';
 // import { Patient } from 'src/app/models/patient.model';
-
+import { ChangeDetectorRef } from '@angular/core';
 import { flatMap, delay } from 'rxjs/operators';
 import { take } from 'rxjs/operators';
 
@@ -41,6 +41,7 @@ export class PrettyEncounterViewerComponent implements OnInit {
                 private encounterAdapter: EncounterAdapter,
                 private formFactory: FormFactory,
                 // private fileUploadResourceService: FileUploadResourceService,
+                private ref: ChangeDetectorRef,
                 private dataSources: DataSources,
                 private formDataSourceService: FormDataSourceService) { }
 
@@ -89,11 +90,13 @@ export class PrettyEncounterViewerComponent implements OnInit {
                 }
             })).pipe(
             take(1)).subscribe((compiledSchema) => {
+                console.log('compiledSchema', compiledSchema);
                 const unpopulatedform = this.formFactory.createForm(compiledSchema, this.dataSources);
                 this.encounterAdapter.populateForm(unpopulatedform, this.selectedEncounter);
                 this.form = unpopulatedform;
                 this.showLoader = false;
                 this.error = false;
+                this.ref.markForCheck();
             });
     }
 

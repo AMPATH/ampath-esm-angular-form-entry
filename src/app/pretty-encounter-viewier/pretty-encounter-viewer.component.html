@@ -1,9 +1,8 @@
-
 <div *ngIf="error" class="text-center">
   {{errorMessage}}
 </div>
 <div *ngIf="showLoader" class="text-center">
-  Loading..
+  {{this.loaderText}}
 </div>
 
 <div class="scoped-bootstrap">
