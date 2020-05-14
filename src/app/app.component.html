@@ -1,4 +1,4 @@
-<!-- <my-app-fe-wrapper></my-app-fe-wrapper> -->
-<my-app-encounter-viewer-wrapper></my-app-encounter-viewer-wrapper>
+<my-app-fe-wrapper *ngIf="view === 'form'"></my-app-fe-wrapper>
+<my-app-encounter-viewer-wrapper *ngIf="view === 'encounter-viewer'"></my-app-encounter-viewer-wrapper>
 <!-- <div style="z-index: 1000; margin-top: 100px;">For Fun</div> -->
 <!-- <router-outlet></router-outlet> -->
