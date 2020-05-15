@@ -1,11 +1,10 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { EncounterResourceService } from '../openmrs-api/encounter-resource.service';
 import { FormSchemaService } from '../form-schema/form-schema.service';
 import { EncounterAdapter, FormFactory, Form, DataSources } from '@ampath-kenya/ngx-openmrs-formentry/dist/ngx-formentry';
 import { FormDataSourceService } from '../form-data-source/form-data-source.service';
 // import { FileUploadResourceService } from '../../../etl-api/file-upload-resource.service';
 // import { Patient } from 'src/app/models/patient.model';
-import { ChangeDetectorRef } from '@angular/core';
 import { flatMap, delay } from 'rxjs/operators';
 import { take } from 'rxjs/operators';
 
@@ -39,7 +38,6 @@ export class PrettyEncounterViewerComponent implements OnInit {
                 private encounterAdapter: EncounterAdapter,
                 private formFactory: FormFactory,
                 // private fileUploadResourceService: FileUploadResourceService,
-                private ref: ChangeDetectorRef,
                 private dataSources: DataSources,
                 private formDataSourceService: FormDataSourceService) { }
 
@@ -91,7 +89,6 @@ export class PrettyEncounterViewerComponent implements OnInit {
                 this.form = unpopulatedform;
                 this.showLoader = false;
                 this.error = false;
-                this.ref.markForCheck();
             });
     }
 
