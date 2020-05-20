@@ -31,6 +31,7 @@ export class FeWrapperComponent implements OnInit {
   formName: string;
   formUuid: string;
   encounterUuid: string;
+  visitUuid: string;
   encounter: any;
   formSchema: any;
   patient: any;
@@ -173,6 +174,9 @@ export class FeWrapperComponent implements OnInit {
         if (props.encounterUuid) {
           this.encounterUuid = props.encounterUuid;
         }
+        if (props.visitUuid && !this.encounterUuid) {
+          this.visitUuid = props.visitUuid;
+        }
         loadForm();
       }, (err) => {
         subject.error(err);
@@ -308,6 +312,9 @@ export class FeWrapperComponent implements OnInit {
     }
     if (this.encounterUuid) {
       this.form.valueProcessingInfo.encounterUuid = this.encounterUuid;
+    }
+    if (this.visitUuid) {
+      this.form.valueProcessingInfo.visitUuid = this.visitUuid;
     }
   }
 
