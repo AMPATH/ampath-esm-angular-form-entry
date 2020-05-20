@@ -8,6 +8,7 @@ export const singleSpaPropsSubject = new ReplaySubject<SingleSpaProps>(1);
 export type SingleSpaProps = AppProps & {
     formUuid: string;
     encounterUuid?: string;
+    visitUuid?: string;
     view: string;
     entryStarted?: () => void;
     entrySubmitted?: () => void;
