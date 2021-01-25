@@ -101,7 +101,7 @@ export class FeWrapperComponent implements OnInit {
   }
 
   public onCancel() {
-    this.singleSpaProps.closeComponent();
+    this.singleSpaProps.closeWorkspace();
   }
 
   public onEditSaved() {
