@@ -15,9 +15,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor() {
   }
   ngOnInit(): void {
-    console.log('app loaded');
     this.sub = singleSpaPropsSubject.subscribe((prop) => {
-      console.log('new singla spa props', prop);
       this.view = prop.view;
     }, (err) => {
 

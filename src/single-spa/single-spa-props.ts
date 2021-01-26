@@ -10,8 +10,5 @@ export type SingleSpaProps = AppProps & {
     encounterUuid?: string;
     visitUuid?: string;
     view: string;
-    entryStarted?: () => void;
-    entrySubmitted?: () => void;
-    entryCancelled?: () => void;
-    closeComponent?: () => void;
+    closeWorkspace: () => void
 };
